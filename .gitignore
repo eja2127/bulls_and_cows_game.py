@@ -52,3 +52,102 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# ************************************************
+# Eli Aleinikoff
+# 3/6/2015
+# file: bulls_and_cows.py
+#
+#This program contains the functions necessary to run
+#the bulls and cows game--one that counts cows, one that
+#counts bulls, and another that generates a random four
+#digit number with no repeat digits. 
+#
+#
+#*************************************************
+
+
+import random
+
+def generate_secret():
+
+#creating list of numbers and then a string out of that list
+#using functions defined below
+
+    number_list = random_list()
+    secret = join_numbers(number_list)
+    return secret
+
+
+def random_list():
+
+#choosing numbers randomly from a list, removing numbers once they are chosen
+#to ensure that there are no repeat digits
+        
+    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    
+    digit1 = int(random.choice(numbers))
+    numbers.remove(digit1)
+    digit2 = int(random.choice(numbers))
+    numbers.remove(digit2)
+    digit3 = int(random.choice(numbers))
+    numbers.remove(digit3)
+    digit4 = int(random.choice(numbers))
+
+#converting integer digits to string and creating list
+
+    random_numbers = [str(digit1), str(digit2), str(digit3), str(digit4)]
+    return random_numbers
+
+def join_numbers(number_list):
+
+#this function takes the individual components of the list and joins them
+#creating a single string with four digits
+        
+    joined_number = ''.join(map(str, number_list))
+    return (joined_number)
+
+def count_bulls(guess,answer):
+
+#
+
+    bulls=0
+    allbulls = []
+
+#for loop takes digits from the guess that are also in the answer
+#and checks if the two numbers have the same index. if they do, it
+#counts one bull.
+
+    for digit in guess:
+        if digit in answer:
+            if digit not in allbulls:
+                if guess.index(digit) == answer.index(digit):
+                    bulls=bulls + 1
+                    allbulls.append(digit)
+    return bulls
+
+def count_cows(guess,answer):
+
+#creating empty list of allcows so that it doesn't count the same
+#number twice
+
+    cows=0
+    allcows = []
+
+#for loop looks at each digit of the guess, counts cow
+#if digit is in the secret number
+    
+    for digit in guess:
+        if digit in answer:
+            if digit not in allcows:
+                cows=cows+1
+                allcows.append(digit)
+                
+#this ensures that numbers are not counted twice. since every
+#bull will also register as a cow, we can just subtract the
+#number of bulls from the number of cows given by the foor loop
+
+    cows = cows - count_bulls(guess, answer)
+
+    return cows
+
